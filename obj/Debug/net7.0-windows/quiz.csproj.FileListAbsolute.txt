@@ -1,0 +1,14 @@
+C:\Users\Honeylet Igot\Documents\red_alien13\projects\C#\assigns\quiz\obj\Debug\net7.0-windows\quiz.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Honeylet Igot\Documents\red_alien13\projects\C#\assigns\quiz\obj\Debug\net7.0-windows\quiz.AssemblyInfoInputs.cache
+C:\Users\Honeylet Igot\Documents\red_alien13\projects\C#\assigns\quiz\obj\Debug\net7.0-windows\quiz.AssemblyInfo.cs
+C:\Users\Honeylet Igot\Documents\red_alien13\projects\C#\assigns\quiz\obj\Debug\net7.0-windows\quiz.csproj.CoreCompileInputs.cache
+C:\Users\Honeylet Igot\Documents\red_alien13\projects\C#\assigns\quiz\bin\Debug\net7.0-windows\quiz.exe
+C:\Users\Honeylet Igot\Documents\red_alien13\projects\C#\assigns\quiz\bin\Debug\net7.0-windows\quiz.deps.json
+C:\Users\Honeylet Igot\Documents\red_alien13\projects\C#\assigns\quiz\bin\Debug\net7.0-windows\quiz.runtimeconfig.json
+C:\Users\Honeylet Igot\Documents\red_alien13\projects\C#\assigns\quiz\bin\Debug\net7.0-windows\quiz.dll
+C:\Users\Honeylet Igot\Documents\red_alien13\projects\C#\assigns\quiz\bin\Debug\net7.0-windows\quiz.pdb
+C:\Users\Honeylet Igot\Documents\red_alien13\projects\C#\assigns\quiz\obj\Debug\net7.0-windows\quiz.dll
+C:\Users\Honeylet Igot\Documents\red_alien13\projects\C#\assigns\quiz\obj\Debug\net7.0-windows\refint\quiz.dll
+C:\Users\Honeylet Igot\Documents\red_alien13\projects\C#\assigns\quiz\obj\Debug\net7.0-windows\quiz.pdb
+C:\Users\Honeylet Igot\Documents\red_alien13\projects\C#\assigns\quiz\obj\Debug\net7.0-windows\quiz.genruntimeconfig.cache
+C:\Users\Honeylet Igot\Documents\red_alien13\projects\C#\assigns\quiz\obj\Debug\net7.0-windows\ref\quiz.dll
