@@ -16,7 +16,9 @@ public class QuestionWindow : Form
 	public QuestionWindow(Question question)
 	{
 		this.question = question;
-		
+		this.FormClosing += (sender , e) => {
+			this.Dispose();
+		};
 		InitializeComponent();
 		InitializeQuestionText();
 		InitializeTitleBar();
@@ -42,6 +44,18 @@ public class QuestionWindow : Form
         this.Text = string.Empty;
 		this.ControlBox = false;
 		this.BackColor = ColorTranslator.FromHtml("#596375");
+		
+		this.StartPosition = FormStartPosition.Manual;
+		Screen primaryScreen = Screen.PrimaryScreen;
+		
+		int screenWidth = primaryScreen.Bounds.Width;
+		int screenHeight = primaryScreen.Bounds.Height;
+		int formsWidth = this.Width;
+		int formsHeight = this.Height;
+		
+		int x = screenWidth / 2 - formsWidth / 2;
+		int y = screenHeight / 2 - formsHeight / 2;
+		this.Location = new Point(x , y);
 	}
 	private void InitializeQuestionText()
 	{
@@ -92,6 +106,11 @@ public class QuestionWindow : Form
 		if(sender is QuestionButton qb)
 		{
 			PopUp popup = new PopUp(qb.GetIsBool());
+			popup.StartPosition = FormStartPosition.Manual;
+			
+			int x = this.Location.X + this.Width + 5;
+			int y = this.Location.Y;
+			popup.Location = new Point(x , y);
 			popup.Show();
 		}
 	}

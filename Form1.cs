@@ -12,6 +12,7 @@ public partial class View : Form
 	private DifficultySelectionButton hard;
 	private List<QuestionWindow> QuestionTracker;
 	private int currentQuestion;
+	private int currentScore;
 	public EventHandler DiffSelect;
     public View()
     {
@@ -40,6 +41,22 @@ public partial class View : Form
         this.Text = string.Empty;
 		this.ControlBox = false;
 		this.BackColor = ColorTranslator.FromHtml("#596375");
+		
+		this.StartPosition = FormStartPosition.Manual;
+		Screen primaryScreen = Screen.PrimaryScreen;
+		
+		int screenWidth = primaryScreen.Bounds.Width;
+		int screenHeight = primaryScreen.Bounds.Height;
+		int formsWidth = this.Width;
+		int formsHeight = this.Height;
+		
+		int x = screenWidth / 2 - formsWidth / 2;
+		int y = screenHeight / 2 - formsHeight / 2;
+		this.Location = new Point(x , y);
+		
+		this.FormClosing += (sender , e) => {
+			this.Dispose();
+		};
     }
 	private void InitializeTitleBar()
 	{
@@ -89,34 +106,66 @@ public partial class View : Form
 	{
 		this.Hide();
 		currentQuestion = 0;
+		currentScore = 0;
 		QuestionTracker = qwa;
 		QuestionTracker[currentQuestion].Show();
 		
-		foreach(var qw in QuestionTracker){
+		for(int i = 0; i < QuestionTracker.Count; i++){
+			QuestionWindow qw = QuestionTracker[i];
 			qw.QuestionButtonClick += QuestionButtonClick;
 			qw.ExitQwClick += ExitQw;
-			qw.MiniClick += (sender, e) => {
-				qw.WindowState = FormWindowState.Minimized;
-			};
-			void ExitQw(object sender, EventArgs e)
-			{
-				this.Show();
-				qw.Hide();
-			};
+			qw.MiniClick += MiniQw;
 		}
-		QuestionTracker[QuestionTracker.Count - 1].QuestionButtonClick -= QuestionButtonClick;
-		QuestionTracker[QuestionTracker.Count - 1].QuestionButtonClick += (sender, e) =>{
-			QuestionTracker[QuestionTracker.Count - 1].Hide();
+		QuestionTracker[QuestionTracker.Count - 1].QuestionButtonClick -= QuestionButtonClick;//stop moving to another question past 5
+		QuestionTracker[QuestionTracker.Count - 1].QuestionButtonClick += (sender, e) =>{//redirect to main quiz
+			if(sender is QuestionButton qb)
+			{
+				if(qb.GetIsBool())
+				{
+					this.currentScore++;
+				}
+			}
+			QuestionTracker[QuestionTracker.Count - 1].Dispose();
+			PopUp popup = new PopUp(true);
+			popup.StartPosition = FormStartPosition.Manual;
+			
+			int x = this.Location.X + this.Width + 5;
+			int y = this.Location.Y + (this.Height / 2);
+			popup.Location = new Point(x , y);
+			popup.SetScore(currentScore);
+			popup.Show();
 			this.Show();
 		};
-	}
-	private void QuestionButtonClick(object sender, EventArgs e) {
-		if(currentQuestion < QuestionTracker.Count){
-			QuestionTracker[currentQuestion++].Hide();
-			QuestionTracker[currentQuestion].Show();
+		void MiniQw(object sender, EventArgs e)
+		{
+			QuestionWindow qw = QuestionTracker[currentQuestion];
+			qw.WindowState = FormWindowState.Minimized;
+		}
+		void ExitQw(object sender, EventArgs e)
+		{
+			QuestionWindow qw = QuestionTracker[currentQuestion];
+			this.Show();
+			qw.ExitQwClick -= ExitQw;
+			qw.MiniClick -= MiniQw;
+			qw.Dispose();
+		};
+		void QuestionButtonClick(object sender, EventArgs e) {
+			if(currentQuestion < QuestionTracker.Count){
+				QuestionWindow qw = QuestionTracker[currentQuestion++];
+				qw.MiniClick -= MiniQw;
+				qw.ExitQwClick -= ExitQw;
+				qw.Dispose();
+				QuestionTracker[currentQuestion].Show();
+			}
+			if(sender is QuestionButton qb)
+			{
+				if(qb.GetIsBool())
+				{
+					this.currentScore = 3;
+				}
+			}
 		}
 	}
-	
 }
 
 public class DifficultySelectionButton : Button

@@ -22,7 +22,9 @@ public class TitleBar : Panel
 	
 	public void ExitClick(object sender, EventArgs e)
 	{
+		MessageBox.Show("Igot, Red Evan I.\nBSCS-1A\nFundamentals of Programming");
 		Application.Exit();
+		
 	}
 }
 

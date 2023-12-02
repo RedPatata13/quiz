@@ -5,6 +5,9 @@ public class PopUp : Form
 	private Label label;
 	public PopUp(bool IsCorrect)
 	{
+		this.FormClosing += (sender, e) => {
+			this.Dispose();
+		};
 		if(IsCorrect)
 		{
 			this.BackColor = Color.Green;
@@ -28,7 +31,11 @@ public class PopUp : Form
 			Controls.Add(label);
 		}
 	}
-	
+	public void SetScore(int val)
+	{
+		this.BackColor = Color.Yellow;
+		label.Text = "Score : " + val;
+	}
 	private void InitializeComponent()
 	{
 		this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
