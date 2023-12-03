@@ -113,19 +113,19 @@ public partial class View : Form
 		for(int i = 0; i < QuestionTracker.Count; i++){
 			QuestionWindow qw = QuestionTracker[i];
 			qw.QuestionButtonClick += QuestionButtonClick;
+			qw.QuestionButtonClick += IncreaseScore;
 			qw.ExitQwClick += ExitQw;
 			qw.MiniClick += MiniQw;
 		}
 		QuestionTracker[QuestionTracker.Count - 1].QuestionButtonClick -= QuestionButtonClick;//stop moving to another question past 5
-		QuestionTracker[QuestionTracker.Count - 1].QuestionButtonClick += (sender, e) =>{//redirect to main quiz
-			if(sender is QuestionButton qb)
-			{
-				if(qb.GetIsBool())
-				{
-					this.currentScore++;
-				}
-			}
-			QuestionTracker[QuestionTracker.Count - 1].Dispose();
+		QuestionTracker[QuestionTracker.Count - 1].QuestionButtonClick += RedirectToQuiz;
+		void RedirectToQuiz(object sender, EventArgs e)
+		{
+			QuestionWindow qwLast = QuestionTracker[QuestionTracker.Count - 1];
+			qwLast.QuestionButtonClick -= IncreaseScore;
+			qwLast.MiniClick -= MiniQw;
+			qwLast.ExitQwClick -= ExitQw;
+			qwLast.Dispose();
 			PopUp popup = new PopUp(true);
 			popup.StartPosition = FormStartPosition.Manual;
 			
@@ -135,7 +135,14 @@ public partial class View : Form
 			popup.SetScore(currentScore);
 			popup.Show();
 			this.Show();
-		};
+		}
+		void IncreaseScore(object sender, EventArgs e)
+		{
+			if(sender is QuestionButton qb)
+			{
+				if(qb.GetIsBool()) this.currentScore++;
+			}
+		}
 		void MiniQw(object sender, EventArgs e)
 		{
 			QuestionWindow qw = QuestionTracker[currentQuestion];
@@ -154,16 +161,12 @@ public partial class View : Form
 				QuestionWindow qw = QuestionTracker[currentQuestion++];
 				qw.MiniClick -= MiniQw;
 				qw.ExitQwClick -= ExitQw;
+				qw.QuestionButtonClick -= QuestionButtonClick;
+				qw.QuestionButtonClick -= IncreaseScore;
 				qw.Dispose();
 				QuestionTracker[currentQuestion].Show();
 			}
-			if(sender is QuestionButton qb)
-			{
-				if(qb.GetIsBool())
-				{
-					this.currentScore = 3;
-				}
-			}
+			
 		}
 	}
 }
