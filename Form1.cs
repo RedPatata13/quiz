@@ -112,19 +112,14 @@ public partial class View : Form
 		
 		for(int i = 0; i < QuestionTracker.Count; i++){
 			QuestionWindow qw = QuestionTracker[i];
-			qw.QuestionButtonClick += QuestionButtonClick;
-			qw.QuestionButtonClick += IncreaseScore;
-			qw.ExitQwClick += ExitQw;
-			qw.MiniClick += MiniQw;
+			SetHandlers(qw);
 		}
 		QuestionTracker[QuestionTracker.Count - 1].QuestionButtonClick -= QuestionButtonClick;//stop moving to another question past 5
 		QuestionTracker[QuestionTracker.Count - 1].QuestionButtonClick += RedirectToQuiz;
 		void RedirectToQuiz(object sender, EventArgs e)
 		{
 			QuestionWindow qwLast = QuestionTracker[QuestionTracker.Count - 1];
-			qwLast.QuestionButtonClick -= IncreaseScore;
-			qwLast.MiniClick -= MiniQw;
-			qwLast.ExitQwClick -= ExitQw;
+			RemoveHandlers(qwLast);
 			qwLast.Dispose();
 			PopUp popup = new PopUp(true);
 			popup.StartPosition = FormStartPosition.Manual;
@@ -135,6 +130,26 @@ public partial class View : Form
 			popup.SetScore(currentScore);
 			popup.Show();
 			this.Show();
+		}
+		void SetHandlers(object sender)
+		{
+			if(sender is QuestionWindow qw)
+			{
+				qw.ExitQwClick += ExitQw;
+				qw.MiniClick += MiniQw;
+				qw.QuestionButtonClick += IncreaseScore;
+				qw.QuestionButtonClick += QuestionButtonClick;
+			}
+		}
+		void RemoveHandlers(object sender)
+		{
+			if(sender is QuestionWindow qw)
+			{
+				qw.ExitQwClick -= ExitQw;
+				qw.MiniClick -= MiniQw;
+				qw.QuestionButtonClick -= QuestionButtonClick;
+				qw.QuestionButtonClick -= IncreaseScore;
+			}
 		}
 		void IncreaseScore(object sender, EventArgs e)
 		{
@@ -151,18 +166,14 @@ public partial class View : Form
 		void ExitQw(object sender, EventArgs e)
 		{
 			QuestionWindow qw = QuestionTracker[currentQuestion];
+			RemoveHandlers(qw);
 			this.Show();
-			qw.ExitQwClick -= ExitQw;
-			qw.MiniClick -= MiniQw;
 			qw.Dispose();
 		};
 		void QuestionButtonClick(object sender, EventArgs e) {
 			if(currentQuestion < QuestionTracker.Count){
 				QuestionWindow qw = QuestionTracker[currentQuestion++];
-				qw.MiniClick -= MiniQw;
-				qw.ExitQwClick -= ExitQw;
-				qw.QuestionButtonClick -= QuestionButtonClick;
-				qw.QuestionButtonClick -= IncreaseScore;
+				RemoveHandlers(qw);
 				qw.Dispose();
 				QuestionTracker[currentQuestion].Show();
 			}
